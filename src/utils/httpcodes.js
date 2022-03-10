@@ -1,0 +1,9 @@
+export const HTTP = {
+    UNAUTHORIZED: 401,
+    SUCCESS: 200,
+    BAD_REQUEST: 400,
+    CREATED: 202,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    EXPIRED_TOKEN: 9003
+}

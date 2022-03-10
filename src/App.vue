@@ -1,32 +1,64 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+    <v-app>
+        <notifications position="center"/>
+        <!--        <v-overlay :value="loading">-->
+        <!--            <v-progress-circular indeterminate size="60"-->
+        <!--            ></v-progress-circular>-->
+        <!--        </v-overlay>-->
+        <slot name="default"></slot>
+        <router-view></router-view>
+    </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+    import {mapGetters} from "vuex";
 
-#nav {
-  padding: 30px;
-}
+    export default {
+        name: 'App',
+        methods: {},
+        computed: {
+            ...mapGetters('auth', {loading: 'getLoading', errors: 'getErrors', messages: 'getMsg'}),
+        },
+        watch: {
+            messages(value) {
+                if (value) {
+                    if (typeof (value.message) === "string")
+                        this.$notify({
+                            title: 'Success',
+                            text: value.message,
+                            type: 'success',
+                        });
+                    if (typeof (value.message) === "object") {
+                        value.message.map(function (x) {
+                            this.$notify({
+                                title: 'Success',
+                                text: x,
+                                type: 'success',
+                            });
+                        })
+                    }
+                }
+            },
+            errors(value) {
+                if (value) {
+                    if (typeof (value.data.message) === "string")
+                        this.$notify({
+                            title: 'Authentication Error',
+                            text: value.data.message,
+                            type: 'error',
+                        });
+                    if (typeof (value.data.message) === "object") {
+                        value.data.message.map(function (x) {
+                            this.$notify({
+                                title: 'Authentication Error',
+                                text: x,
+                                type: 'error',
+                            });
+                        })
+                    }
+                }
+            }
+        }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+    };
+</script>

@@ -1,0 +1,36 @@
+<template>
+    <div>
+        <v-btn color="primary" dark @click.stop="dialog = true">Open Dialog</v-btn>
+        <v-dialog v-model="dialog" max-width="690" persistent transition="dialog-bottom-transition">
+            <v-card>
+                <v-toolbar dark color="primary">
+                    <v-btn icon dark @click="dialog = false">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>Update Credit</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                </v-toolbar>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <CreditForm button="Update"></CreditForm>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+    </div>
+</template>
+<script>
+    import CreditForm from "./forms/CreditForm";
+
+    export default {
+        name: "Credits",
+        data() {
+            return {
+                dialog: false
+            }
+        },
+        components: {CreditForm},
+        mounted() {
+            this.$store.dispatch('main/a_change_title', 'Credits')
+        },
+    }
+</script>
